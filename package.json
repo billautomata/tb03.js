@@ -17,6 +17,13 @@
   },
   "homepage": "https://github.com/billautomata/tb03.js#readme",
   "dependencies": {
-    "d3": "^4.3.0"
+    "body-parser": "^1.15.2",
+    "brfs": "^1.4.3",
+    "d3": "^4.3.0",
+    "express": "^4.14.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-express-server": "^0.5.3",
+    "grunt-run": "^0.6.0"
   }
 }

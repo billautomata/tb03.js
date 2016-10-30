@@ -11,3 +11,9 @@ var pattern = {
   ]
 }
 ```
+
+* [x] reads pattern string to object
+* [x] writes pattern object string 
+* [ ] renders pattern object
+* [ ] edits pattern object
+* [ ] plays pattern string
