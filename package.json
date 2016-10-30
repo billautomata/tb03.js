@@ -1,0 +1,22 @@
+{
+  "name": "tb03.js",
+  "version": "1.0.0",
+  "description": "parses and generates synthesizer patterns for the roland tb-03",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billautomata/tb03.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/billautomata/tb03.js/issues"
+  },
+  "homepage": "https://github.com/billautomata/tb03.js#readme",
+  "dependencies": {
+    "d3": "^4.3.0"
+  }
+}
