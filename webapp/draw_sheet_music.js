@@ -2,6 +2,8 @@ var d3 = require('d3')
 
 var note_lut = require('./scale_note.js')()
 
+var DEBUG = false
+
 module.exports = function sheet_music (options) {
   // options.parent
   // options.data
@@ -9,14 +11,14 @@ module.exports = function sheet_music (options) {
   var div_local = options.parent.append('div')
 
   var w = 300
-  var h = 300
+  var h = 200
 
   var midi_note_range = [12, 121]
 
   var note_range_to_display = [30, 74]
 
-  var scale_x = d3.scaleLinear().domain([0, 16]).range([(w * 0.1), (w - (w * 0.1))])
-  var scale_x_all_notes = d3.scaleLinear().domain([0, 108]).range([(w * 0.1), (w - (w * 0.1))])
+  var scale_x = d3.scaleLinear().domain([0, 16]).range([(w * 0.2), (w - (w * 0.1))])
+  var scale_x_all_notes = d3.scaleLinear().domain([0, 108]).range([(w * 0.25), (w - (w * 0.1))])
   var scale_y = d3.scaleLinear().domain([0, 64]).range([h - 10, 10])
 
   var svg = div_local.append('svg')
@@ -34,30 +36,44 @@ module.exports = function sheet_music (options) {
       if (staff_lines.indexOf(note_value) !== -1) {
         svg.append('line')
           .attr('id', '_' + note_value)
-          .attr('x1', scale_x(-1))
+          .attr('x1', scale_x(-5))
           .attr('y1', scale_y(note.draw_index))
-          .attr('x2', scale_x(17))
+          .attr('x2', scale_x(16))
           .attr('y2', scale_y(note.draw_index))
           .attr('stroke', 'black')
-          .attr('stroke-width', '0.3px')
+          .attr('stroke-width', '1px')
       }
-      if (note.isLine === true) {
-        svg.append('line')
-          .attr('id', '_' + note_value)
-          .attr('x1', scale_x_all_notes(display_idx))
-          .attr('y1', scale_y(note.draw_index))
-          .attr('x2', scale_x_all_notes(display_idx) + 15)
-          .attr('y2', scale_y(note.draw_index))
-          .attr('stroke', 'red')
-          .attr('stroke-width', '0.2px')
+      if (DEBUG) {
+        if (note.isLine === true) {
+          svg.append('line')
+            .attr('id', '_' + note_value)
+            .attr('x1', scale_x_all_notes(display_idx))
+            .attr('y1', scale_y(note.draw_index))
+            .attr('x2', scale_x_all_notes(display_idx) + 15)
+            .attr('y2', scale_y(note.draw_index))
+            .attr('stroke', 'red')
+            .attr('stroke-width', '0.2px')
+        }
+        svg.append('text').text([note_value, note.name, note.octave].join(' '))
+          .attr('x', scale_x_all_notes(display_idx))
+          .attr('y', scale_y(note.draw_index))
+          .attr('dy', '0.33em')
+          .style('font-size', '5px')
       }
-      svg.append('text').text([note_value, note.name, note.octave].join(' '))
-        .attr('x', scale_x_all_notes(display_idx))
-        .attr('y', scale_y(note.draw_index))
-        .attr('dy', '0.33em')
-        .style('font-size', '5px')
     }
   })
+
+  svg.append('text').text('𝄞')
+    .attr('x', 6)
+    .attr('y', scale_y(note_lut[71].draw_index))
+    .attr('dy', '0.33em')
+    .attr('font-size', (h / 6) + 'px')
+
+  svg.append('text').text('𝄢')
+    .attr('x', 6)
+    .attr('y', scale_y(note_lut[50].draw_index))
+    .attr('dy', '0.4em')
+    .attr('font-size', (h / 6) + 'px')
 
   // draw lines
   d3.range(midi_note_range[0], midi_note_range[1]).forEach(function (note_value, display_idx) {
@@ -66,52 +82,64 @@ module.exports = function sheet_music (options) {
     }
   })
 
-  return
-  // options.data.steps.forEach(function (step, step_idx) {
-  //   if (step.note < bottom) {
-  //     // draw lines
-  //     // var i = Number(step.note)
-  //     if (step.state === 1) {
-  //       for (var i = Number(step.note); i < bottom; i++) {
-  //         if (i % 2 === 0) {
-  //           svg.append('line')
-  //             .attr('x1', scale_x(step_idx) - (scale_x(1) * 0.1))
-  //             .attr('y1', note_to_y(i))
-  //             .attr('x2', scale_x(step_idx) + (scale_x(1) * 0.1))
-  //             .attr('y2', note_to_y(i))
-  //             .attr('stroke', 'black')
-  //             .attr('stroke-width', '0.1px')
-  //         }
-  //       }
-  //       // note head
-  //       svg.append('circle')
-  //         .attr('cx', scale_x(step_idx))
-  //         .attr('cy', note_to_y(step.note))
-  //         .attr('r', '2px')
-  //         .attr('fill', 'black')
-  //         .attr('stroke', 'none')
-  //
-  //       // flag
-  //       if (Number(step.note) < 60) {
-  //         // flag up
-  //         svg.append('line')
-  //           .attr('x1', scale_x(step_idx) + 2)
-  //           .attr('y1', note_to_y(step.note) + 0.5)
-  //           .attr('x2', scale_x(step_idx) + 2)
-  //           .attr('y2', note_to_y(step.note + 6))
-  //           .attr('stroke', 'black')
-  //           .attr('stroke-width', '0.3px')
-  //       }
-  //     } {
-  //     svg.append('circle')
-  //       .attr('cx', scale_x(step_idx))
-  //       .attr('cy', note_to_y(48))
-  //       .attr('r', '2px')
-  //       .attr('fill', 'blue')
-  //       .attr('stroke', 'none')
-  //     }
-  //   }
-  //
-  // })
+  var bottom = staff_lines[0]
+  var top = staff_lines[staff_lines.length - 1]
+  options.data.steps.forEach(function (step, step_idx) {
+    // console.log(step)
+    var note = note_lut[step.note]
+
+    if (step.state === 1) {
+      if (step.note < bottom) {
+        for (var i = Number(step.note); i < bottom; i++) {
+          if (note_lut[i].isLine) {
+            svg.append('line')
+              .attr('x1', scale_x(step_idx) - (scale_x(1) * 0.07))
+              .attr('y1', scale_y(note_lut[i].draw_index))
+              .attr('x2', scale_x(step_idx) + (scale_x(1) * 0.07))
+              .attr('y2', scale_y(note_lut[i].draw_index))
+              .attr('stroke', 'black')
+              .attr('stroke-width', '1px')
+          }
+        }
+      }
+      // note head
+
+      svg.append('g').attr('transform', [
+        'translate(',
+        scale_x(step_idx),
+        scale_y(note_lut[step.note].draw_index),
+        ')'
+      ].join(' '))
+        .append('ellipse')
+        .attr('transform', 'rotate(-33)')
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('rx', '3px')
+        .attr('ry', '2.1px')
+        .attr('fill', 'black')
+        .attr('stroke', 'none')
+
+      // flag
+      if (Number(step.note) < 60) {
+        // flag up
+        svg.append('line')
+          .attr('x1', scale_x(step_idx) + 2)
+          .attr('y1', scale_y(note_lut[step.note].draw_index) + 0.5)
+          .attr('x2', scale_x(step_idx) + 2)
+          .attr('y2', scale_y(note_lut[step.note].draw_index + 4))
+          .attr('stroke', 'black')
+          .attr('stroke-width', '1px')
+      }
+    } else {
+      console.log('here')
+      svg.append('circle')
+        .attr('cx', scale_x(step_idx))
+        .attr('cy', scale_y(note_lut[50].draw_index))
+        .attr('r', '2px')
+        .attr('fill', 'blue')
+        .attr('stroke', 'none')
+    }
+
+  })
 
 }

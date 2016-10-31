@@ -32,7 +32,7 @@ module.exports = function scale_note () {
     if (note.name.indexOf('#') !== -1 || note.name === 'E' || note.name === 'B') {
       current_draw_index += 1
     }
-    console.log(note)
+  // console.log(note)
   })
   return note_lut
 }
