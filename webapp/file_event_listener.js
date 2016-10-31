@@ -2,6 +2,8 @@ module.exports = function () {
   document.getElementById('files').addEventListener('change', handleFileSelect, false)
 }
 
+var file_utils = require('./file_utils.js')
+
 function handleFileSelect (evt) {
   var files = evt.target.files // FileList object
 
@@ -19,7 +21,7 @@ function handleFileSelect (evt) {
         var fileData = e.target.result
         // console.log(window.m = fileData)
         // console.log(theFile)
-        append_file(theFile, fileData)
+        file_utils.append_file(theFile, fileData)
       // Render thumbnail.
       // var span = document.createElement('span')
       // span.innerHTML = ['<img class="thumb" src="', e.target.result,
@@ -36,29 +38,4 @@ function handleFileSelect (evt) {
       '</li>')
   }
   document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>'
-}
-
-function append_file (file, data) {
-  var files = get_files()
-  if (files.filter(function (o) { return o.name === file.name }).length === 0) {
-    files.push({
-      name: file.name,
-      data: data
-    })
-  } else {
-    console.log(['already seen', file.name].join(' '))
-  }
-  save_files(files)
-}
-function get_files () {
-  var disk = window.localStorage.getItem('disk')
-  if (disk === null) {
-    disk = []
-  } else {
-    disk = JSON.parse(disk)
-  }
-  return disk
-}
-function save_files (d) {
-  window.localStorage.setItem('disk', JSON.stringify(d))
 }
