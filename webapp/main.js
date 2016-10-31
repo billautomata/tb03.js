@@ -14,9 +14,6 @@ disk.forEach(function (file) {
   if (file.name.indexOf('TRACK') !== -1) {
     // track file
   } else {
-    console.log(file)
-    console.log()
-    console.log()
     require('./draw_pattern.js')({
       parent: d3.select('div#patterns'),
       name: file.name,
@@ -24,3 +21,5 @@ disk.forEach(function (file) {
     })
   }
 })
+
+require('./scale_note.js')()
