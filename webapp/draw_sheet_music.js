@@ -11,15 +11,18 @@ module.exports = function sheet_music (options) {
   var div_local = options.parent.append('div')
 
   var w = 300
-  var h = 200
+  var h = 150
 
   var midi_note_range = [12, 121]
 
-  var note_range_to_display = [30, 74]
+  var note_range_to_display = [24, 80]
+  var draw_index_range_to_display = [ note_lut[note_range_to_display[0]].draw_index, note_lut[note_range_to_display[1]].draw_index ]
 
   var scale_x = d3.scaleLinear().domain([0, 16]).range([(w * 0.2), (w - (w * 0.1))])
   var scale_x_all_notes = d3.scaleLinear().domain([0, 108]).range([(w * 0.25), (w - (w * 0.1))])
-  var scale_y = d3.scaleLinear().domain([0, 64]).range([h - 10, 10])
+  var scale_y = d3.scaleLinear().domain(draw_index_range_to_display).range([h - 10, 10])
+
+  // console.log('scale y 1', )
 
   var svg = div_local.append('svg')
     .attr('viewBox', [0, 0, w, h].join(' '))
@@ -63,17 +66,19 @@ module.exports = function sheet_music (options) {
     }
   })
 
+  var font_height = (scale_y(1) - scale_y(2)) * 10
+
   svg.append('text').text('𝄞')
     .attr('x', 6)
     .attr('y', scale_y(note_lut[71].draw_index))
     .attr('dy', '0.33em')
-    .attr('font-size', (h / 6) + 'px')
+    .attr('font-size', font_height + 'px')
 
   svg.append('text').text('𝄢')
     .attr('x', 6)
     .attr('y', scale_y(note_lut[50].draw_index))
-    .attr('dy', '0.4em')
-    .attr('font-size', (h / 6) + 'px')
+    .attr('dy', '0.33em')
+    .attr('font-size', font_height + 'px')
 
   // draw lines
   d3.range(midi_note_range[0], midi_note_range[1]).forEach(function (note_value, display_idx) {
@@ -126,7 +131,7 @@ module.exports = function sheet_music (options) {
           .attr('x1', scale_x(step_idx) + 2)
           .attr('y1', scale_y(note_lut[step.note].draw_index) + 0.5)
           .attr('x2', scale_x(step_idx) + 2)
-          .attr('y2', scale_y(note_lut[step.note].draw_index + 4))
+          .attr('y2', scale_y(note_lut[step.note].draw_index + 5))
           .attr('stroke', 'black')
           .attr('stroke-width', '1px')
       }
