@@ -136,7 +136,6 @@ module.exports = function sheet_music (options) {
           .attr('stroke-width', '1px')
       }
     } else {
-      console.log('here')
       svg.append('circle')
         .attr('cx', scale_x(step_idx))
         .attr('cy', scale_y(note_lut[50].draw_index))

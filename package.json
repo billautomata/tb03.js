@@ -24,6 +24,8 @@
     "grunt": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-express-server": "^0.5.3",
-    "grunt-run": "^0.6.0"
+    "grunt-run": "^0.6.0",
+    "standard": "^4.5.4",
+    "synaptic": "^1.0.8"
   }
 }
